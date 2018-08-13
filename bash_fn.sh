@@ -24,12 +24,13 @@ alias dboom="dboom"
 function kubessh(){
  local pos="head"
  local which=$3
+ local namespace=$2
  if [ $which = 2 ]; then
   local pos="tail"
  fi
- local first_env=$(kubectl get pods -n alpha -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | grep $1 | $pos -n 1)
+ local first_env=$(kubectl get pods -n $namespace -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | grep $1 | $pos -n 1)
  echo $first_env
- kubectl exec -i -t $first_env bash -n $2
+ kubectl exec -i -t $first_env bash -n $namespace
 }
 
 alias kubessh="kubessh"
